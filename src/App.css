@@ -1,0 +1,59 @@
+.App {
+  background-color: var(--Light-gray);
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: center;
+}
+
+.current-user-container {
+  margin: 1.5em;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--White);
+  border-radius: 1rem;
+  /* position: absolute; */
+  /* bottom: 1%; */
+  order: 2;
+  left: 0;
+  right: 0;
+}
+
+.current-user-container textarea {
+  resize: none;
+  padding: 1em 2em;
+  margin: 1.5em;
+  border: 1.5px solid var(--Light-gray);
+  border-radius: 1rem;
+  font-size: 1rem;
+  outline: none;
+}
+
+/* .current-user-container textarea:focus {
+  
+} */
+
+.current-bottom-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em 1.5em;
+}
+
+.current-bottom-section img {
+  max-height: 2.4rem;
+  max-width: 2.4rem;
+}
+
+.current-bottom-section button {
+  padding: 1em 1.5em;
+  background-color: var(--Moderate-blue);
+  color: var(--White);
+  border-radius: .5rem;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  border: none;
+}
