@@ -27,6 +27,7 @@ export default function MaxUser() {
   const ramsesReply = maxObject?.replies.find(reply => reply.id === 3)
   const juliusReply = maxObject?.replies.find(reply => reply.id === 4)
 
+  console.log(replies)
 
   return (
     <>
@@ -62,7 +63,7 @@ export default function MaxUser() {
           </div>
 
           <RamsesUser reply={ramsesReply} replies={replies} setReplies={setReplies}/>
-          <JuliusUser reply={juliusReply}/>
+          <JuliusUser reply={juliusReply} replies={replies} setReplies={setReplies}/>
       </div>}
       
     </>

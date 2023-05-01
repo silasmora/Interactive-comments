@@ -10,8 +10,8 @@ export default function RamsesReplies({replies, setReplies, setReplyText}) {
   const [addedReply, setAddedReply] = useState(null);
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState('')
-  const {voteCounts, increment, decrement} = useContext(Context)
   const [showModal, setShowModal] = useState(false)
+  const {voteCounts, increment, decrement} = useContext(Context)
 
   useEffect(() => {
     const savedAddedReply = JSON.parse(localStorage.getItem('addedReply'));
@@ -51,14 +51,11 @@ export default function RamsesReplies({replies, setReplies, setReplyText}) {
     setReplies(updatedReplies)
     localStorage.removeItem('addedReply');
     setReplyText('')
-  }
-  
-  function openModal() {
-    setShowModal(true)
+    toggleModal()
   }
 
-  function closeModal() {
-    setShowModal(false)
+  function toggleModal() {
+    setShowModal(prevModal => !prevModal)
   }
 
   if (showModal) {
@@ -106,7 +103,7 @@ export default function RamsesReplies({replies, setReplies, setReplyText}) {
 
                 <div className='reply-action'>
                   <img src={deleteIcon} alt="delete icon" />
-                  <span className='delete' onClick={openModal}>Delete</span>
+                  <span className='delete' onClick={toggleModal}>Delete</span>
                   <img src={editIcon} alt="reply icon" />
                   <span onClick={handleEditClick}>Edit</span>
                 </div>
@@ -124,7 +121,7 @@ export default function RamsesReplies({replies, setReplies, setReplyText}) {
               <h3>Delete Comment</h3>
               <p>Are you sure you want to delete this comment? This will remove the comment and can't be undone.</p>
               <div className='modal-buttons'>
-                <button className='modal-cancel-button' onClick={closeModal}>No, Cancel</button>
+                <button className='modal-cancel-button' onClick={toggleModal}>No, Cancel</button>
                 <button className='modal-delete-button' onClick={() => handleDeleteClick(addedReply.id)}>Yes, Delete</button>
               </div>
             </div>

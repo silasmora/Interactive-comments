@@ -5,11 +5,14 @@ import editIcon from '/images/icon-edit.svg'
 import deleteIcon from '/images/icon-delete.svg'
 import { Context } from '../Context'
 
-export default function JuliusUser({ reply }) {
+export default function JuliusUser({ reply, replies, setReplies }) {
 
   const {voteCounts, increment, decrement} = useContext(Context)
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState(reply.content)
+  const [showModal, setShowModal] = useState(false)
+  
+  console.log(reply.id)
 
   useEffect(() => {
     const savedEditedContent = JSON.parse(localStorage.getItem('edited content'))
@@ -41,6 +44,17 @@ export default function JuliusUser({ reply }) {
     } else {
       setEditedContent(newValue);
     }
+  }
+
+  function handleDeleteClick(id) {
+    const updatedReplies = replies.filter(reply => reply.id !== id)
+    setReplies(updatedReplies)
+    localStorage.removeItem('edited content');
+    toggleModal()
+  }
+
+  function toggleModal() {
+    setShowModal(prevModal => !prevModal)
   }
 
   return (
@@ -80,7 +94,7 @@ export default function JuliusUser({ reply }) {
 
               <div className='reply-action'>
                 <img src={deleteIcon} alt="delete icon" />
-                <span className='delete'>Delete</span>
+                <span onClick={toggleModal} className='delete'>Delete</span>
                 <img src={editIcon} alt="reply icon" />
                 <span onClick={handleEditClick}>Edit</span>
               </div>
@@ -89,6 +103,20 @@ export default function JuliusUser({ reply }) {
 
           </div>
         )}
+        {showModal && (
+        <div className='modal'>
+          <div className='overlay'>
+            <div className='modal-content'>
+              <h3>Delete Comment</h3>
+              <p>Are you sure you want to delete this comment? This will remove the comment and can't be undone.</p>
+              <div className='modal-buttons'>
+                <button className='modal-cancel-button' onClick={toggleModal}>No, Cancel</button>
+                <button className='modal-delete-button' onClick={() => handleDeleteClick(reply.id)}>Yes, Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
     
   )

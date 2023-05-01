@@ -50,7 +50,6 @@ function ContextProvider({ children }) {
       [username]: prevCounts[username] - 1
     }))
   }
-  
 
   return (
     <Context.Provider value={{
@@ -59,7 +58,7 @@ function ContextProvider({ children }) {
       maxData,
       voteCounts,
       increment,
-      decrement 
+      decrement,
       }
       }>
       {children}
