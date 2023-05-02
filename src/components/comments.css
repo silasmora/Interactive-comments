@@ -5,10 +5,6 @@
   flex-direction: column;
   background-color: var(--White);
   border-radius: 1rem;
-  /* position: absolute; */
-  /* top: 1%; */
-  left: 0;
-  right: 0;
 }
 
 .comments-container-max {
@@ -18,10 +14,7 @@
   flex-direction: column;
   background-color: var(--White);
   border-radius: 1rem;
-  /* position: absolute; */
-  /* top: 35%; */
-  left: 0;
-  right: 0;
+  margin-top: 0;
 }
 
 .top-section,
@@ -151,14 +144,11 @@
 .reply-container {
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  /* justify-content: stretch; */
   min-width: 300px;
   margin: 1.5em;
   background-color: var(--White);
   border-radius: 1rem;
   padding: 1em 1.5em;
-  /* border: 1px solid black; */
 }
 
 .reply-top-section {
@@ -272,5 +262,32 @@
   border: none;
   cursor: pointer;
 }
+
+/* is replying section*/
+
+.is-replying {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.border-left {
+  position: relative;
+}
+
+.border-left::before {
+  content: "";
+  position: absolute;
+  left: -5%;
+  top: 2%;
+  bottom: 5%;
+  border-left: 2.5px solid hsl(211, 10%, 45%, .1);
+}
+
+.is-replying > div {
+  width: 500px;
+
+}
+
 
 

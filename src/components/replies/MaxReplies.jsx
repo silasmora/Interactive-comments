@@ -1,23 +1,23 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import plusIcon from '/images/icon-plus.svg'
 import minusIcon from '/images/icon-minus.svg'
 import editIcon from '/images/icon-edit.svg'
 import deleteIcon from '/images/icon-delete.svg'
 import { Context } from '../../Context'
 
-export default function RamsesReplies({replies, setReplies, setReplyText}) {
+export default function MaxReplies({ replies, setReplies,  setReplyText}) {
 
-  const [addedReply, setAddedReply] = useState(null);
+  const [maxReply, setMaxReply] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState('')
   const [showModal, setShowModal] = useState(false)
   const {voteCounts, increment, decrement} = useContext(Context)
 
   useEffect(() => {
-    const savedAddedReply = JSON.parse(localStorage.getItem('addedReply'));
-    if (savedAddedReply) {
-      setAddedReply(savedAddedReply);
-      setEditedContent(savedAddedReply.content)
+    const savedMaxReplies = JSON.parse(localStorage.getItem('max replies'));
+    if (savedMaxReplies) {
+      setMaxReply(savedMaxReplies)
+      setEditedContent(savedMaxReplies.content)
     }
   }, []);
 
@@ -27,29 +27,29 @@ export default function RamsesReplies({replies, setReplies, setReplyText}) {
 
   function handleCancelClick() {
     setIsEditing(false)
-    setEditedContent(addedReply.content)
+    setEditedContent(maxReply.content)
   }
 
   function handleContentChange(event) {
     const newValue = event.target.value;
-    if (newValue.startsWith(`@${addedReply.replyingTo} `)) {
-      setEditedContent(newValue.slice(`@${addedReply.replyingTo} `.length));
+    if (newValue.startsWith(`@${maxReply.replyingTo} `)) {
+      setEditedContent(newValue.slice(`@${maxReply.replyingTo} `.length));
     } else {
       setEditedContent(newValue);
     }
   }
-  
+
   function handleSaveClick() {
     setIsEditing(false)
-    const updatedReply = {...addedReply, content: editedContent}
-    setAddedReply(updatedReply)
-    localStorage.setItem('addedReply', JSON.stringify(updatedReply))
+    const updatedReply = {...maxReply, content: editedContent}
+    setMaxReply(updatedReply)
+    localStorage.setItem('max replies', JSON.stringify(updatedReply))
   }
 
   function handleDeleteClick(id) {
     const updatedReplies = replies.filter(reply => reply.id !== id)
     setReplies(updatedReplies)
-    localStorage.removeItem('addedReply');
+    localStorage.removeItem('max replies');
     setReplyText('')
     toggleModal()
   }
@@ -66,18 +66,18 @@ export default function RamsesReplies({replies, setReplies, setReplyText}) {
 
   return (
     <>
-      {addedReply? (
+      {maxReply? (
         <div className='comments-container-max'>
           <div className='top-section'>
-            <img className='amy-img' src={addedReply.user.image.png} alt="amy robson" />
-            <p><span>{addedReply.user.username}</span></p>
+            <img className='amy-img' src={maxReply.user.image.png} alt="amy robson" />
+            <p><span>{maxReply.user.username}</span></p>
             <span className='you'>you</span>
-            <p>{addedReply.createdAt}</p>
+            <p>{maxReply.createdAt}</p>
           </div>
           {isEditing ? (
             <div className='edit-container'>
               <textarea 
-                value={`@${addedReply.replyingTo} ${editedContent}`}
+                value={`@${maxReply.replyingTo} ${editedContent}`}
                 onChange={handleContentChange}
                 cols="30" 
                 rows="5"></textarea>
@@ -88,16 +88,16 @@ export default function RamsesReplies({replies, setReplies, setReplyText}) {
             </div>
           ) : (
             <div>
-              <p className='content'><span className='replying-to'>{`@${addedReply.replyingTo}`}</span>{editedContent}</p>
+              <p className='content'><span className='replying-to'>{`@${maxReply.replyingTo}`}</span>{editedContent}</p>
               <div className='bottom-section'>
 
                 <div className='vote-action'>
 
-                  <img onClick={() => increment(addedReply.user.username)} src={plusIcon} alt="plus icon" />
+                  <img onClick={() => increment(maxReply.user.username)} src={plusIcon} alt="plus icon" />
 
-                  <span>{voteCounts[addedReply.user.username]}</span>
+                  <span>{voteCounts[maxReply.user.username]}</span>
 
-                  <img onClick={() => decrement(addedReply.user.username)} src={minusIcon} alt="minus icon" />
+                  <img onClick={() => decrement(maxReply.user.username)} src={minusIcon} alt="minus icon" />
 
                 </div>
 
@@ -122,14 +122,12 @@ export default function RamsesReplies({replies, setReplies, setReplyText}) {
               <p>Are you sure you want to delete this comment? This will remove the comment and can't be undone.</p>
               <div className='modal-buttons'>
                 <button className='modal-cancel-button' onClick={toggleModal}>No, Cancel</button>
-                <button className='modal-delete-button' onClick={() => handleDeleteClick(addedReply.id)}>Yes, Delete</button>
+                <button className='modal-delete-button' onClick={() => handleDeleteClick(maxReply.id)}>Yes, Delete</button>
               </div>
             </div>
           </div>
         </div>
       )}
     </>
-  );
+  )
 }
-
-

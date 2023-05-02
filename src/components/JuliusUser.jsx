@@ -12,7 +12,6 @@ export default function JuliusUser({ reply, replies, setReplies }) {
   const [editedContent, setEditedContent] = useState(reply.content)
   const [showModal, setShowModal] = useState(false)
   
-  console.log(reply.id)
 
   useEffect(() => {
     const savedEditedContent = JSON.parse(localStorage.getItem('edited content'))

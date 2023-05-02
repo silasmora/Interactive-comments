@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div className="App">
-      <CurrentUser />
+      {/* <CurrentUser /> */}
       <AmyUser />
       <MaxUser />
     </div>

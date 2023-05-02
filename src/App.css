@@ -4,8 +4,6 @@
   width: 100vw;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  justify-content: center;
 }
 
 .current-user-container {
@@ -15,11 +13,8 @@
   flex-direction: column;
   background-color: var(--White);
   border-radius: 1rem;
-  /* position: absolute; */
-  /* bottom: 1%; */
+  align-self: flex-end;
   order: 2;
-  left: 0;
-  right: 0;
 }
 
 .current-user-container textarea {
@@ -31,10 +26,6 @@
   font-size: 1rem;
   outline: none;
 }
-
-/* .current-user-container textarea:focus {
-  
-} */
 
 .current-bottom-section {
   display: flex;
@@ -56,4 +47,6 @@
   letter-spacing: .5px;
   text-transform: uppercase;
   border: none;
+  cursor: pointer;
+  margin-left: 5px;
 }

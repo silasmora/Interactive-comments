@@ -6,12 +6,14 @@ import RamsesUser from './RamsesUser'
 import JuliusUser from './JuliusUser'
 import { Context } from '../Context'
 import './comments.css'
+import CurrentUser from './CurrentUser'
 
 export default function MaxUser() {
 
   const {maxData, voteCounts, increment, decrement} = useContext(Context)
   const [isLoading, setIsLoading] = useState(true)
   const [replies, setReplies] = useState([])
+  const [isReplying, setIsReplying] = useState(false)
 
   useEffect(() => {
     if (maxObject) {   
@@ -27,7 +29,9 @@ export default function MaxUser() {
   const ramsesReply = maxObject?.replies.find(reply => reply.id === 3)
   const juliusReply = maxObject?.replies.find(reply => reply.id === 4)
 
-  console.log(replies)
+  function handleReplyClick() {
+    setIsReplying(true)
+  }
 
   return (
     <>
@@ -56,14 +60,28 @@ export default function MaxUser() {
 
               <div className='reply-action'>
                 <img src={replyIcon} alt="reply icon" />
-                <span>Reply</span>
+                <span onClick={handleReplyClick}>Reply</span>
               </div>
 
             </div>
           </div>
 
-          <RamsesUser reply={ramsesReply} replies={replies} setReplies={setReplies}/>
-          <JuliusUser reply={juliusReply} replies={replies} setReplies={setReplies}/>
+          <div className={isReplying ? 'is-replying' : ''}>
+            <div className='border-left'>
+            <RamsesUser reply={ramsesReply} replies={replies} setReplies={setReplies}/>
+            <JuliusUser reply={juliusReply} replies={replies} setReplies={setReplies}/>
+            </div>
+          </div>
+
+          
+          <CurrentUser 
+            replies={replies} 
+            setReplies={setReplies}
+            maxObject={maxObject}
+            isReplying={isReplying}
+            setIsReplying={setIsReplying}
+            />
+          
       </div>}
       
     </>

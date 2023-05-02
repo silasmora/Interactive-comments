@@ -8,21 +8,10 @@ import { nanoid } from 'nanoid'
 
 export default function RamsesUser({ reply, replies, setReplies }) {
 
-  const {voteCounts, increment, decrement, juliusImg} = useContext(Context)
+  const {voteCounts, increment, decrement, currentUserData} = useContext(Context)
   const [isReplying, setIsReplying] = useState(false)
   const [replyText, setReplyText] = useState('')
   const [addedReplyId, setAddedReplyId] = useState(null)
-
-  // useEffect(() => {
-  //   const savedReplies = JSON.parse(localStorage.getItem('replies'))
-  //   if (savedReplies) {
-  //     setReplies(savedReplies)
-  //   }
-  // }, [])
-  
-  // useEffect(() => {
-  //   localStorage.setItem('replies', JSON.stringify(replies))
-  // }, [replies])
 
   function handleReplyClick() {
     setIsReplying(true)
@@ -94,7 +83,7 @@ export default function RamsesUser({ reply, replies, setReplies }) {
       {isReplying && (
       <div className='reply-container'>
         <div className='reply-top-section'>
-          <img src={juliusImg.png} />
+          <img src={currentUserData.image.png} />
           <textarea 
             value={replyText}
             onChange={handleReplyChange}

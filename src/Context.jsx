@@ -4,7 +4,7 @@ const Context = React.createContext()
 
 function ContextProvider({ children }) {
 
-  const [juliusImg, SetJuliusImg] = useState({})
+  const [currentUserData, SetCurrentUserData] = useState({})
   const [amyData, SetAmyData] = useState([])
   const [maxData, SetMaxData] = useState([])
   const [voteCounts, setVoteCounts] = useState({})
@@ -15,7 +15,7 @@ function ContextProvider({ children }) {
     fetch(url)
     .then(res => res.json())
     .then(data => {
-      SetJuliusImg(data.currentUser.image)
+      SetCurrentUserData(data.currentUser)
       SetAmyData(data.comments)
       SetMaxData(data.comments)
 
@@ -53,7 +53,7 @@ function ContextProvider({ children }) {
 
   return (
     <Context.Provider value={{
-      juliusImg,
+      currentUserData,
       amyData,
       maxData,
       voteCounts,
