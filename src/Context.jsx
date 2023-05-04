@@ -13,43 +13,62 @@ function ContextProvider({ children }) {
 
   useEffect(() => {
     fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      SetCurrentUserData(data.currentUser)
-      SetAmyData(data.comments)
-      SetMaxData(data.comments)
-
-      const initialVoteCount = {} //create an empty object to store each user's vote count
-      data.comments.forEach(comment => {
-        //iterated over the comments array to get each object
-        //and set each object with username as the key and the 0 as the value to initialVoteCount
-        initialVoteCount[comment.user.username] = 0 
-
-        if (comment.replies && comment.replies.length > 0) {
-          comment.replies.forEach(reply => {
-            initialVoteCount[reply.user.username] = 0
-          })
-        }
+      .then(res => res.json())
+      .then(data => {
+        SetCurrentUserData(data.currentUser)
+        SetAmyData(data.comments)
+        SetMaxData(data.comments)
+  
+        const initialVoteCount = {}
+        data.comments.forEach(comment => {
+          initialVoteCount[comment.id] = {
+            user: comment.user.username,
+            count: comment.score || 0 // Initialize with the score from JSON or zero if not present
+          }
+  
+          if (comment.replies && comment.replies.length > 0) {
+            comment.replies.forEach(reply => {
+              initialVoteCount[reply.id] = {
+                user: reply.user.username,
+                count: reply.score || 0 // Initialize with the score from JSON or zero if not present
+              }
+            })
+          }
+        })
+        setVoteCounts(initialVoteCount)
       })
-      setVoteCounts(initialVoteCount)
-    })
-    .catch(err => console.error(err))
+      .catch(err => console.error(err))
   }, [])
+  
 
 
-  function increment(username) {
-    setVoteCounts(prevCounts => ({
-      ...prevCounts,
-      [username]: prevCounts[username] + 1
-    }))
+  function increment(id) {
+    setVoteCounts(prevCounts => {
+      const count = prevCounts[id] ? prevCounts[id].count + 1 : 1;
+      return {
+        ...prevCounts,
+        [id]: {
+          ...prevCounts[id],
+          count
+        }
+      };
+    });
   }
   
-  function decrement(username) {
-    setVoteCounts(prevCounts => ({
-      ...prevCounts,
-      [username]: prevCounts[username] - 1
-    }))
+  function decrement(id) {
+    setVoteCounts(prevCounts => {
+      const count = prevCounts[id] ? prevCounts[id].count - 1 : -1;
+      return {
+        ...prevCounts,
+        [id]: {
+          ...prevCounts[id],
+          count
+        }
+      };
+    });
   }
+  
+  
 
   return (
     <Context.Provider value={{

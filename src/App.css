@@ -21,9 +21,12 @@
   resize: none;
   padding: 1em 2em;
   margin: 1.5em;
-  border: 1.5px solid var(--Light-gray);
+  border: 1.5px solid var(--Moderate-blue);
   border-radius: 1rem;
   font-size: 1rem;
+}
+
+.current-user-container textarea:focus {
   outline: none;
 }
 

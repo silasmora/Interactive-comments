@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState, useRef, useEffect } from 'react'
 import plusIcon from '/images/icon-plus.svg'
 import minusIcon from '/images/icon-minus.svg'
 import replyIcon from '/images/icon-reply.svg'
@@ -13,6 +13,14 @@ export default function RamsesUser({ reply, replies, setReplies }) {
   const [replyText, setReplyText] = useState('')
   const [addedReplyId, setAddedReplyId] = useState(null)
 
+  const ramsesTextAreaRef = useRef(null)
+
+  useEffect(() => {
+    if (isReplying && ramsesTextAreaRef.current) {
+      ramsesTextAreaRef.current.focus()
+    }
+  }, [isReplying])
+
   function handleReplyClick() {
     setIsReplying(true)
   }
@@ -26,7 +34,7 @@ export default function RamsesUser({ reply, replies, setReplies }) {
     const newReply = {
       id: nanoid(),
       content: replyText,
-      createdAt: new Date().toLocaleString(),
+      createdAt: new Date().toISOString(),
       score: 0,
       replyingTo: reply.user.username,
       user: {
@@ -64,11 +72,11 @@ export default function RamsesUser({ reply, replies, setReplies }) {
 
           <div className='vote-action'>
 
-            <img onClick={() => increment(reply.user.username)} src={plusIcon} alt="plus icon" />
+            <img onClick={() => increment(reply.id)} src={plusIcon} alt="plus icon" />
 
-            <span>{voteCounts[reply.user.username]}</span>
+            <span>{voteCounts[reply.id] ? voteCounts[reply.id].count : 0}</span>
 
-            <img onClick={() => decrement(reply.user.username)} src={minusIcon} alt="minus icon" />
+            <img onClick={() => decrement(reply.id)} src={minusIcon} alt="minus icon" />
 
           </div>
 
@@ -84,10 +92,11 @@ export default function RamsesUser({ reply, replies, setReplies }) {
       <div className='reply-container'>
         <div className='reply-top-section'>
           <img src={currentUserData.image.png} />
-          <textarea 
+          <textarea
+            ref={ramsesTextAreaRef} 
             value={replyText}
             onChange={handleReplyChange}
-            cols="30" 
+            cols="30"
             rows="5"
             placeholder={`Replying to ${reply.user.username}`}
             ></textarea>

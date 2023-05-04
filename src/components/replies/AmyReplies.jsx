@@ -1,26 +1,28 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import plusIcon from '/images/icon-plus.svg'
 import minusIcon from '/images/icon-minus.svg'
 import editIcon from '/images/icon-edit.svg'
 import deleteIcon from '/images/icon-delete.svg'
-import { getTimeAgo } from '../../getTimeAgo'
 import { Context } from '../../Context'
+import { getTimeAgo } from '../../getTimeAgo'
 
-export default function RamsesReplies({replies, setReplies, setReplyText}) {
+export default function AmyReplies({ amyReplies, setAmyReplies,  setAmyReplyText}) {
 
-  const [addedReply, setAddedReply] = useState(null);
+  const [amyReply, setAmyReply] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState('')
   const [showModal, setShowModal] = useState(false)
   const {voteCounts, increment, decrement} = useContext(Context)
-
+  
   useEffect(() => {
-    const savedAddedReply = JSON.parse(localStorage.getItem('addedReply'));
-    if (savedAddedReply) {
-      setAddedReply(savedAddedReply);
-      setEditedContent(savedAddedReply.content)
+    const savedAmyReplies = JSON.parse(localStorage.getItem('amy replies'));
+    // const savedAmyArray = JSON.parse(localStorage.getItem('amy array'))
+    if (savedAmyReplies) {
+      setAmyReply(savedAmyReplies)
+      // setAmyReplies(savedAmyArray)
+      setEditedContent(savedAmyReplies.content)
     }
-  }, []);
+  }, [])
 
   function handleEditClick() {
     setIsEditing(true)
@@ -28,30 +30,30 @@ export default function RamsesReplies({replies, setReplies, setReplyText}) {
 
   function handleCancelClick() {
     setIsEditing(false)
-    setEditedContent(addedReply.content)
+    setEditedContent(amyReply.content)
   }
 
   function handleContentChange(event) {
     const newValue = event.target.value;
-    if (newValue.startsWith(`@${addedReply.replyingTo} `)) {
-      setEditedContent(newValue.slice(`@${addedReply.replyingTo} `.length));
+    if (newValue.startsWith(`@${amyReply.replyingTo} `)) {
+      setEditedContent(newValue.slice(`@${amyReply.replyingTo} `.length));
     } else {
       setEditedContent(newValue);
     }
   }
-  
+
   function handleSaveClick() {
     setIsEditing(false)
-    const updatedReply = {...addedReply, content: editedContent}
-    setAddedReply(updatedReply)
-    localStorage.setItem('addedReply', JSON.stringify(updatedReply))
+    const updatedReply = {...amyReply, content: editedContent}
+    setAmyReply(updatedReply)
+    localStorage.setItem('amy replies', JSON.stringify(updatedReply))
   }
 
   function handleDeleteClick(id) {
-    const updatedReplies = replies.filter(reply => reply.id !== id)
-    setReplies(updatedReplies)
-    localStorage.removeItem('addedReply');
-    setReplyText('')
+    const updatedReplies = amyReplies.filter(reply => reply.id !== id)
+    setAmyReplies(updatedReplies)
+    localStorage.removeItem('amy replies');
+    setAmyReplyText('')
     toggleModal()
   }
 
@@ -67,18 +69,18 @@ export default function RamsesReplies({replies, setReplies, setReplyText}) {
 
   return (
     <>
-      {addedReply? (
+      {amyReply? (
         <div className='comments-container-max'>
           <div className='top-section'>
-            <img className='amy-img' src={addedReply.user.image.png} alt="amy robson" />
-            <p><span>{addedReply.user.username}</span></p>
+            <img className='amy-img' src={amyReply.user.image.png} alt="amy robson" />
+            <p><span>{amyReply.user.username}</span></p>
             <span className='you'>you</span>
-            <p>{getTimeAgo(new Date(addedReply.createdAt))}</p>
+            <p>{getTimeAgo(new Date(amyReply.createdAt))}</p>
           </div>
           {isEditing ? (
             <div className='edit-container'>
               <textarea 
-                value={`@${addedReply.replyingTo} ${editedContent}`}
+                value={`@${amyReply.replyingTo} ${editedContent}`}
                 onChange={handleContentChange}
                 cols="30" 
                 rows="5"></textarea>
@@ -89,16 +91,16 @@ export default function RamsesReplies({replies, setReplies, setReplyText}) {
             </div>
           ) : (
             <div>
-              <p className='content'><span className='replying-to'>{`@${addedReply.replyingTo}`}</span>{editedContent}</p>
+              <p className='content'><span className='replying-to'>{`@${amyReply.replyingTo}`}</span>{editedContent}</p>
               <div className='bottom-section'>
 
                 <div className='vote-action'>
 
-                  <img onClick={() => increment(addedReply.id)} src={plusIcon} alt="plus icon" />
+                  <img onClick={() => increment(amyReply.id)} src={plusIcon} alt="plus icon" />
 
-                  <span>{voteCounts[addedReply.id] ? voteCounts [addedReply.id].count : 0}</span>
+                  <span>{voteCounts[amyReply.id] ? voteCounts[amyReply.id].count : 0}</span>
 
-                  <img onClick={() => decrement(addedReply.id)} src={minusIcon} alt="minus icon" />
+                  <img onClick={() => decrement(amyReply.id)} src={minusIcon} alt="minus icon" />
 
                 </div>
 
@@ -123,14 +125,12 @@ export default function RamsesReplies({replies, setReplies, setReplyText}) {
               <p>Are you sure you want to delete this comment? This will remove the comment and can't be undone.</p>
               <div className='modal-buttons'>
                 <button className='modal-cancel-button' onClick={toggleModal}>No, Cancel</button>
-                <button className='modal-delete-button' onClick={() => handleDeleteClick(addedReply.id)}>Yes, Delete</button>
+                <button className='modal-delete-button' onClick={() => handleDeleteClick(amyReply.id)}>Yes, Delete</button>
               </div>
             </div>
           </div>
         </div>
       )}
     </>
-  );
+  )
 }
-
-

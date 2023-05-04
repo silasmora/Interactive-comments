@@ -3,6 +3,7 @@ import plusIcon from '/images/icon-plus.svg'
 import minusIcon from '/images/icon-minus.svg'
 import editIcon from '/images/icon-edit.svg'
 import deleteIcon from '/images/icon-delete.svg'
+import { getTimeAgo } from '../../getTimeAgo'
 import { Context } from '../../Context'
 
 export default function MaxReplies({ replies, setReplies,  setReplyText}) {
@@ -12,6 +13,8 @@ export default function MaxReplies({ replies, setReplies,  setReplyText}) {
   const [editedContent, setEditedContent] = useState('')
   const [showModal, setShowModal] = useState(false)
   const {voteCounts, increment, decrement} = useContext(Context)
+
+  
 
   useEffect(() => {
     const savedMaxReplies = JSON.parse(localStorage.getItem('max replies'));
@@ -72,7 +75,7 @@ export default function MaxReplies({ replies, setReplies,  setReplyText}) {
             <img className='amy-img' src={maxReply.user.image.png} alt="amy robson" />
             <p><span>{maxReply.user.username}</span></p>
             <span className='you'>you</span>
-            <p>{maxReply.createdAt}</p>
+            <p>{getTimeAgo(new Date(maxReply.createdAt))}</p>
           </div>
           {isEditing ? (
             <div className='edit-container'>
@@ -93,11 +96,11 @@ export default function MaxReplies({ replies, setReplies,  setReplyText}) {
 
                 <div className='vote-action'>
 
-                  <img onClick={() => increment(maxReply.user.username)} src={plusIcon} alt="plus icon" />
+                  <img onClick={() => increment(maxReply.id)} src={plusIcon} alt="plus icon" />
 
-                  <span>{voteCounts[maxReply.user.username]}</span>
+                  <span>{voteCounts[maxReply.id] ? voteCounts[maxReply.id].count : 0}</span>
 
-                  <img onClick={() => decrement(maxReply.user.username)} src={minusIcon} alt="minus icon" />
+                  <img onClick={() => decrement(maxReply.id)} src={minusIcon} alt="minus icon" />
 
                 </div>
 

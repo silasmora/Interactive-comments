@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import plusIcon from '/images/icon-plus.svg'
 import minusIcon from '/images/icon-minus.svg'
 import editIcon from '/images/icon-edit.svg'
@@ -11,7 +11,6 @@ export default function JuliusUser({ reply, replies, setReplies }) {
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState(reply.content)
   const [showModal, setShowModal] = useState(false)
-  
 
   useEffect(() => {
     const savedEditedContent = JSON.parse(localStorage.getItem('edited content'))
@@ -56,6 +55,14 @@ export default function JuliusUser({ reply, replies, setReplies }) {
     setShowModal(prevModal => !prevModal)
   }
 
+  const juliusTextAreaRef = useRef(null)
+
+  useEffect(() => {
+    if (isEditing && juliusTextAreaRef.current) {
+      juliusTextAreaRef.current.focus()
+    }
+  }, [isEditing])
+
   return (
     <div className='comments-container-max'>
         <div className='top-section'>
@@ -66,7 +73,8 @@ export default function JuliusUser({ reply, replies, setReplies }) {
         </div>
         {isEditing ? (
           <div className='edit-container'>
-            <textarea 
+            <textarea
+              ref={juliusTextAreaRef} 
               value={`@${reply.replyingTo} ${editedContent}`}
               onChange={handleContentChange}
               cols="30" 
@@ -83,11 +91,11 @@ export default function JuliusUser({ reply, replies, setReplies }) {
 
               <div className='vote-action'>
 
-                <img onClick={() => increment(reply.user.username)} src={plusIcon} alt="plus icon" />
+                <img onClick={() => increment(reply.id)} src={plusIcon} alt="plus icon" />
 
-                <span>{voteCounts[reply.user.username]}</span>
+                <span>{voteCounts[reply.id] ? voteCounts[reply.id].count : 0}</span>
 
-                <img onClick={() => decrement(reply.user.username)} src={minusIcon} alt="minus icon" />
+                <img onClick={() => decrement(reply.id)} src={minusIcon} alt="minus icon" />
 
               </div>
 
