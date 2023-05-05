@@ -6,23 +6,24 @@ import deleteIcon from '/images/icon-delete.svg'
 import { Context } from '../../Context'
 import { getTimeAgo } from '../../getTimeAgo'
 
-export default function AmyReplies({ amyReplies, setAmyReplies,  setAmyReplyText}) {
+export default function AmyReplies({ amyReply, amyReplies, setAmyReplies,  setAmyReplyText }) {
 
-  const [amyReply, setAmyReply] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
-  const [editedContent, setEditedContent] = useState('')
+  const [editedContent, setEditedContent] = useState(amyReply.content)
   const [showModal, setShowModal] = useState(false)
   const {voteCounts, increment, decrement} = useContext(Context)
+
+  useEffect(() => {
+    const savedUpdatedContent = JSON.parse(localStorage.getItem(`updatedContent-${amyReply.id}`));
+    if (savedUpdatedContent) {
+      setEditedContent(savedUpdatedContent);
+    }
+  }, [amyReply.id]);
   
   useEffect(() => {
-    const savedAmyReplies = JSON.parse(localStorage.getItem('amy replies'));
-    // const savedAmyArray = JSON.parse(localStorage.getItem('amy array'))
-    if (savedAmyReplies) {
-      setAmyReply(savedAmyReplies)
-      // setAmyReplies(savedAmyArray)
-      setEditedContent(savedAmyReplies.content)
-    }
-  }, [])
+    localStorage.setItem(`updatedContent-${amyReply.id}`, JSON.stringify(editedContent));
+  }, [amyReply.id, editedContent]);
+  
 
   function handleEditClick() {
     setIsEditing(true)
@@ -43,12 +44,18 @@ export default function AmyReplies({ amyReplies, setAmyReplies,  setAmyReplyText
   }
 
   function handleSaveClick() {
-    setIsEditing(false)
-    const updatedReply = {...amyReply, content: editedContent}
-    setAmyReply(updatedReply)
-    localStorage.setItem('amy replies', JSON.stringify(updatedReply))
+    setIsEditing(false);
+    const updatedReply = {
+      ...amyReply,
+      content: editedContent,
+    };
+    const updatedReplies = amyReplies.map((reply) =>
+      reply.id === amyReply.id ? updatedReply : reply
+    );
+    setAmyReplies(updatedReplies);
   }
-
+  
+  
   function handleDeleteClick(id) {
     const updatedReplies = amyReplies.filter(reply => reply.id !== id)
     setAmyReplies(updatedReplies)

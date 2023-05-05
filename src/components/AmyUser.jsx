@@ -9,39 +9,29 @@ import { nanoid } from 'nanoid'
 import './comments.css'
 
 export default function AmyUser() {
-
   const {amyData, voteCounts, increment, decrement} = useContext(Context)
-  const [isLoading, setIsLoading] = useState(true)
+  const amyObject = amyData[0]
 
   const [amyReplies, setAmyReplies] = useState([])
   const [isReplyingToAmy, setIsReplyingToAmy] = useState(false)
   const [amyReplyText, setAmyReplyText] = useState('')
-  const [addedReplyAmyId, setAddedReplyAmyId] = useState(null)
 
-   // // Retrieve amy replies from local storage when component mounts
-  // useEffect(() => {
-  //   const savedAmyReplies = JSON.parse(localStorage.getItem('amy array'));
-  //   if (savedAmyReplies) {
-  //     setAmyReplies(savedAmyReplies);
-  //   }
-  // }, []);
   
-  // // Save amy replies to local storage whenever the amyReplies state changes
-  // useEffect(() => {
-  //   localStorage.setItem('amy array', JSON.stringify(amyReplies));
-  // }, [amyReplies]);
-
-  console.log(amyReplies)
-
 
   useEffect(() => {
-    if (amyObject) {
-      setAmyReplies(amyObject.replies)
-      setIsLoading(false)
+    const savedAmyReplies = JSON.parse(localStorage.getItem('amy replies'));
+    console.log('retrieved from storage:', savedAmyReplies);
+    if (savedAmyReplies) {
+      setAmyReplies(savedAmyReplies);
+      
     }
-  }, [amyData])
-  
-  const amyObject = amyData.find(element => element.id === 1)
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('amy replies', JSON.stringify(amyReplies));
+  }, [amyReplies]);
+
+  console.log(amyReplies)
 
   function handleReplyClick() {
     setIsReplyingToAmy(true)
@@ -56,26 +46,17 @@ export default function AmyUser() {
       replyingTo: amyObject.user.username,
       user: {
         image: {
-          png: './images/avatars/image-juliusomo.png',
-          webp: './images/avatars/image-juliusomo.webp'
+          png: '/images/avatars/image-juliusomo.png',
+          webp: '/images/avatars/image-juliusomo.webp'
         },
         username: 'juliusomo',
       },
     };
-    setAmyReplies(prevReplies => [...prevReplies, newReply])
+    setAmyReplies(prevAmyReplies => [...prevAmyReplies, newReply])
     setIsReplyingToAmy(false)
     setAmyReplyText('')
-    setAddedReplyAmyId(newReply.id)
-
-    // const existingReplies = JSON.parse(localStorage.getItem('amy replies')) || [];
-    // const updatedReplies = [...existingReplies, newReply];
-    // localStorage.setItem('amy replies', JSON.stringify(updatedReplies))
-    localStorage.setItem('amy replies', JSON.stringify(newReply))
-    
   }
   
-  const amyReply = addedReplyAmyId && amyReplies.find(reply => reply.id === addedReplyAmyId);
-
   const textAreaRef = useRef(null)
 
   useEffect(() => {
@@ -86,24 +67,21 @@ export default function AmyUser() {
 
   return (
     <>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
         <div>
           <div className='comments-container'>
             <div className='top-section'>
-              <img className='amy-img' src={amyObject.user.image.png} alt="amy robson" />
-              <p><span>{amyObject.user.username}</span></p>
-              <p>{amyObject.createdAt}</p>
+              <img className='amy-img' src={amyObject?.user.image.png} alt="amy robson" />
+              <p><span>{amyObject?.user.username}</span></p>
+              <p>{amyObject?.createdAt}</p>
             </div>
-            <p className='content'>{amyObject.content}</p>
+            <p className='content'>{amyObject?.content}</p>
             <div className='bottom-section'>
 
               <div className='vote-action'>
 
-                <img onClick={() => increment(amyObject.id)} src={plusIcon} alt="plus icon" />
+                <img onClick={() => increment(amyObject?.id)} src={plusIcon} alt="plus icon" />
 
-                <span>{voteCounts[amyObject.id] ? voteCounts[amyObject.id].count : 0}</span>
+                <span>{voteCounts[amyObject?.id] ? voteCounts[amyObject?.id].count : 0}</span>
 
                 <img onClick={() => decrement(amyObject.id)} src={minusIcon} alt="minus icon" />
 
@@ -116,7 +94,7 @@ export default function AmyUser() {
 
             </div>
           </div>
-
+          
           <CurrentUser 
             ref={textAreaRef}
             amyObject={amyObject}
@@ -127,28 +105,20 @@ export default function AmyUser() {
             setAmyReplyText={setAmyReplyText}
             />
 
-          {/* {amyReplies.map((reply) => (
-            <AmyReplies
-              key={`${addedReplyAmyId?.id}${reply.id}`}
-              amyReply={amyReply}
+          
+          {amyReplies?.map((reply) => (
+            <AmyReplies 
+              key={reply.id}
+              amyReply={reply}
               amyReplies={amyReplies}
               setAmyReplies={setAmyReplies}
               amyReplyText={amyReplyText}
               setAmyReplyText={setAmyReplyText}
             />
-          ))} */}
-
-            <AmyReplies
-              key={`${addedReplyAmyId?.id}`}
-              amyReply={amyReply}
-              amyReplies={amyReplies}
-              setAmyReplies={setAmyReplies}
-              amyReplyText={amyReplyText}
-              setAmyReplyText={setAmyReplyText}
-            />
+            ))}
         </div>
 
-     )} 
+     
     </>
   )
 }
