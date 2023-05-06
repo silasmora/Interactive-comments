@@ -11,15 +11,6 @@ export default function RamsesUser({ reply, replies, setReplies }) {
   const {voteCounts, increment, decrement, currentUserData} = useContext(Context)
   const [isReplying, setIsReplying] = useState(false)
   const [replyText, setReplyText] = useState('')
-  const [addedReplyId, setAddedReplyId] = useState(null)
-
-  const ramsesTextAreaRef = useRef(null)
-
-  useEffect(() => {
-    if (isReplying && ramsesTextAreaRef.current) {
-      ramsesTextAreaRef.current.focus()
-    }
-  }, [isReplying])
 
   function handleReplyClick() {
     setIsReplying(true)
@@ -47,36 +38,40 @@ export default function RamsesUser({ reply, replies, setReplies }) {
     };
     setReplies(prevReplies => [...prevReplies, newReply])
     setIsReplying(false);
-    setAddedReplyId(newReply.id)
-    localStorage.setItem('addedReply', JSON.stringify(newReply))
+    setReplyText('')
   }
 
   function handleCancelClick() {
     setIsReplying(false)
     setReplyText('')
-    setAddedReplyId('')
   }
 
-  const addedReply = addedReplyId && replies.find(reply => reply.id === addedReplyId);
+  const ramsesTextAreaRef = useRef(null)
+
+  useEffect(() => {
+    if (isReplying && ramsesTextAreaRef.current) {
+      ramsesTextAreaRef.current.focus()
+    }
+  }, [isReplying])
 
   return (
     <>
       <div className='comments-container-max'>
         <div className='top-section'>
-          <img className='amy-img' src={reply.user.image.png} alt="amy robson" />
-          <p><span>{reply.user.username}</span></p>
-          <p>{reply.createdAt}</p>
+          <img className='amy-img' src={reply?.user.image.png} alt="amy robson" />
+          <p><span>{reply?.user.username}</span></p>
+          <p>{reply?.createdAt}</p>
         </div>
-        <p className='content'><span className='replying-to'>{`@${reply.replyingTo}`}</span>{reply.content}</p>
+        <p className='content'><span className='replying-to'>{`@${reply?.replyingTo}`}</span>{reply?.content}</p>
         <div className='bottom-section'>
 
           <div className='vote-action'>
 
-            <img onClick={() => increment(reply.id)} src={plusIcon} alt="plus icon" />
+            <img onClick={() => increment(reply?.id)} src={plusIcon} alt="plus icon" />
 
-            <span>{voteCounts[reply.id] ? voteCounts[reply.id].count : 0}</span>
+            <span>{voteCounts[reply?.id] ? voteCounts[reply?.id].count : 0}</span>
 
-            <img onClick={() => decrement(reply.id)} src={minusIcon} alt="minus icon" />
+            <img onClick={() => decrement(reply?.id)} src={minusIcon} alt="minus icon" />
 
           </div>
 
@@ -98,7 +93,7 @@ export default function RamsesUser({ reply, replies, setReplies }) {
             onChange={handleReplyChange}
             cols="30"
             rows="5"
-            placeholder={`Replying to ${reply.user.username}`}
+            placeholder={`Replying to ${reply?.user.username}`}
             ></textarea>
         </div>
         <div className='reply-buttons'>
@@ -107,7 +102,7 @@ export default function RamsesUser({ reply, replies, setReplies }) {
         </div>
       </div>)}
 
-      <RamsesReplies 
+      {/* <RamsesReplies 
         addedReply={addedReply} 
         replies={replies} 
         setReplies={setReplies} 
@@ -115,7 +110,7 @@ export default function RamsesUser({ reply, replies, setReplies }) {
         replyText={replyText}
         setReplyText={setReplyText}
         
-        />
+        /> */}
    </>
   )
 }

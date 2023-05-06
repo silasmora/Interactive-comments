@@ -68,7 +68,9 @@ function ContextProvider({ children }) {
     });
   }
   
-  
+  useEffect(() => {
+    localStorage.setItem('maxData', JSON.stringify(maxData))
+  }, [maxData])
 
   return (
     <Context.Provider value={{

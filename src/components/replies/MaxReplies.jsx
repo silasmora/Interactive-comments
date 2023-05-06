@@ -6,23 +6,23 @@ import deleteIcon from '/images/icon-delete.svg'
 import { getTimeAgo } from '../../getTimeAgo'
 import { Context } from '../../Context'
 
-export default function MaxReplies({ replies, setReplies,  setReplyText}) {
+export default function MaxReplies({ maxReply, replies, setReplies, setReplyText}) {
 
-  const [maxReply, setMaxReply] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
-  const [editedContent, setEditedContent] = useState('')
+  const [editedContent, setEditedContent] = useState(maxReply.content)
   const [showModal, setShowModal] = useState(false)
   const {voteCounts, increment, decrement} = useContext(Context)
 
-  
-
   useEffect(() => {
-    const savedMaxReplies = JSON.parse(localStorage.getItem('max replies'));
-    if (savedMaxReplies) {
-      setMaxReply(savedMaxReplies)
-      setEditedContent(savedMaxReplies.content)
+    const savedUpdatedContent = JSON.parse(localStorage.getItem(`updatedContent-${maxReply.id}`));
+    if (savedUpdatedContent) {
+      setEditedContent(savedUpdatedContent);
     }
-  }, []);
+  }, [maxReply.id]);
+  
+  useEffect(() => {
+    localStorage.setItem(`updatedContent-${maxReply.id}`, JSON.stringify(editedContent));
+  }, [maxReply.id, editedContent]);
 
   function handleEditClick() {
     setIsEditing(true)
@@ -45,8 +45,10 @@ export default function MaxReplies({ replies, setReplies,  setReplyText}) {
   function handleSaveClick() {
     setIsEditing(false)
     const updatedReply = {...maxReply, content: editedContent}
-    setMaxReply(updatedReply)
-    localStorage.setItem('max replies', JSON.stringify(updatedReply))
+    const updatedReplies = replies.map((reply) =>
+      reply.id === maxReply.id ? updatedReply : reply
+    );
+    setReplies(updatedReplies);
   }
 
   function handleDeleteClick(id) {

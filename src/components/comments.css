@@ -1,6 +1,7 @@
 .comments-container {
   margin: 1.5em;
   min-width: 300px;
+  width: 700px;
   display: flex;
   flex-direction: column;
   background-color: var(--White);
@@ -10,6 +11,7 @@
 .comments-container-max {
   margin: 1.5em;
   min-width: 300px;
+  width: 700px;
   display: flex;
   flex-direction: column;
   background-color: var(--White);

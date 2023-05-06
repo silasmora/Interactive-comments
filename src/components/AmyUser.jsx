@@ -10,20 +10,17 @@ import './comments.css'
 
 export default function AmyUser() {
   const {amyData, voteCounts, increment, decrement} = useContext(Context)
-  const amyObject = amyData[0]
-
   const [amyReplies, setAmyReplies] = useState([])
   const [isReplyingToAmy, setIsReplyingToAmy] = useState(false)
   const [amyReplyText, setAmyReplyText] = useState('')
-
-  
 
   useEffect(() => {
     const savedAmyReplies = JSON.parse(localStorage.getItem('amy replies'));
     console.log('retrieved from storage:', savedAmyReplies);
     if (savedAmyReplies) {
       setAmyReplies(savedAmyReplies);
-      
+    } else if (amyObject) {
+      setAmyReplies(amyObject.replies);
     }
   }, [])
 
@@ -31,7 +28,8 @@ export default function AmyUser() {
     localStorage.setItem('amy replies', JSON.stringify(amyReplies));
   }, [amyReplies]);
 
-  console.log(amyReplies)
+
+  const amyObject = amyData?.find(element => element.id === 1)
 
   function handleReplyClick() {
     setIsReplyingToAmy(true)
@@ -52,7 +50,8 @@ export default function AmyUser() {
         username: 'juliusomo',
       },
     };
-    setAmyReplies(prevAmyReplies => [...prevAmyReplies, newReply])
+    
+    setAmyReplies(prevReplies => [...prevReplies, newReply])
     setIsReplyingToAmy(false)
     setAmyReplyText('')
   }

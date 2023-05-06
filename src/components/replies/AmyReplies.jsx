@@ -6,7 +6,7 @@ import deleteIcon from '/images/icon-delete.svg'
 import { Context } from '../../Context'
 import { getTimeAgo } from '../../getTimeAgo'
 
-export default function AmyReplies({ amyReply, amyReplies, setAmyReplies,  setAmyReplyText }) {
+export default function AmyReplies({ amyReply, amyReplies, setAmyReplies, setAmyReplyText }) {
 
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState(amyReply.content)
@@ -45,10 +45,7 @@ export default function AmyReplies({ amyReply, amyReplies, setAmyReplies,  setAm
 
   function handleSaveClick() {
     setIsEditing(false);
-    const updatedReply = {
-      ...amyReply,
-      content: editedContent,
-    };
+    const updatedReply = {...amyReply, content: editedContent};
     const updatedReplies = amyReplies.map((reply) =>
       reply.id === amyReply.id ? updatedReply : reply
     );

@@ -9,18 +9,21 @@ export default function JuliusUser({ reply, replies, setReplies }) {
 
   const {voteCounts, increment, decrement} = useContext(Context)
   const [isEditing, setIsEditing] = useState(false)
-  const [editedContent, setEditedContent] = useState(reply.content)
+  const [editedContent, setEditedContent] = useState('')
   const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
-    const savedEditedContent = JSON.parse(localStorage.getItem('edited content'))
-    if (savedEditedContent) {
-      setEditedContent(savedEditedContent)
+    const savedUpdatedContent = JSON.parse(localStorage.getItem(`updatedContent-${reply?.id}`));
+    if (savedUpdatedContent) {
+      setEditedContent(savedUpdatedContent);
+    } else if (reply) {
+      setEditedContent(reply?.content);
     }
-  }, [])
+  }, [reply?.id])
+
   useEffect(() => {
-    localStorage.setItem('edited content', JSON.stringify(editedContent))
-  }, [editedContent])
+    localStorage.setItem(`updatedContent-${reply?.id}`, JSON.stringify(editedContent));
+  }, [editedContent, reply?.id]);
 
   function handleEditClick() {
     setIsEditing(true)
@@ -33,6 +36,11 @@ export default function JuliusUser({ reply, replies, setReplies }) {
 
   function handleSaveClick() {
     setIsEditing(false)
+    const updatedReply = {...reply, content: editedContent}
+    const updatedReplies = replies.map((reply) =>
+      reply.id === reply.id ? updatedReply : reply
+    );
+    setReplies(updatedReplies);
   }
 
   function handleContentChange(event) {
@@ -66,16 +74,16 @@ export default function JuliusUser({ reply, replies, setReplies }) {
   return (
     <div className='comments-container-max'>
         <div className='top-section'>
-          <img className='amy-img' src={reply.user.image.png} alt="amy robson" />
-          <p><span>{reply.user.username}</span></p>
+          <img className='amy-img' src={reply?.user.image.png} alt="amy robson" />
+          <p><span>{reply?.user.username}</span></p>
           <span className='you'>you</span>
-          <p>{reply.createdAt}</p>
+          <p>{reply?.createdAt}</p>
         </div>
         {isEditing ? (
           <div className='edit-container'>
             <textarea
               ref={juliusTextAreaRef} 
-              value={`@${reply.replyingTo} ${editedContent}`}
+              value={`@${reply?.replyingTo} ${editedContent}`}
               onChange={handleContentChange}
               cols="30" 
               rows="5"></textarea>
@@ -86,16 +94,16 @@ export default function JuliusUser({ reply, replies, setReplies }) {
           </div>
         ) : (
           <div>
-            <p className='content'><span className='replying-to'>{`@${reply.replyingTo}`}</span>{editedContent}</p>
+            <p className='content'><span className='replying-to'>{`@${reply?.replyingTo}`}</span>{editedContent}</p>
             <div className='bottom-section'>
 
               <div className='vote-action'>
 
-                <img onClick={() => increment(reply.id)} src={plusIcon} alt="plus icon" />
+                <img onClick={() => increment(reply?.id)} src={plusIcon} alt="plus icon" />
 
-                <span>{voteCounts[reply.id] ? voteCounts[reply.id].count : 0}</span>
+                <span>{voteCounts[reply?.id] ? voteCounts[reply?.id].count : 0}</span>
 
-                <img onClick={() => decrement(reply.id)} src={minusIcon} alt="minus icon" />
+                <img onClick={() => decrement(reply?.id)} src={minusIcon} alt="minus icon" />
 
               </div>
 

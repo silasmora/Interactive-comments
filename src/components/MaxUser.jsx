@@ -13,19 +13,23 @@ import './comments.css'
 export default function MaxUser() {
 
   const {maxData, voteCounts, increment, decrement} = useContext(Context)
-  const [isLoading, setIsLoading] = useState(true)
-  
   const [replies, setReplies] = useState([])
   const [isReplying, setIsReplying] = useState(false)
   const [replyText, setReplyText] = useState('')
-  const [addedReplyMaxId, setAddedReplyMaxId] = useState(null)
-
+  
   useEffect(() => {
-    if (maxObject) {   
+    const savedMaxReplies = JSON.parse(localStorage.getItem('max replies'));
+    console.log('retrieved from storage:', savedMaxReplies);
+    if (savedMaxReplies) {
+      setReplies(savedMaxReplies);
+    } else if (maxObject) {   
       setReplies(maxObject.replies);
-      setIsLoading(false);
     }
   }, [maxData]);
+  
+  useEffect(() => {
+    localStorage.setItem('max replies', JSON.stringify(replies));
+  }, [replies]);
   
   const maxObject = maxData?.find(element => element.id === 2)
 
@@ -56,11 +60,7 @@ export default function MaxUser() {
     setReplies(prevReplies => [...prevReplies, newReply])
     setIsReplying(false)
     setReplyText('')
-    setAddedReplyMaxId(newReply.id)
-    localStorage.setItem('max replies', JSON.stringify(newReply))
   }
-
-  const maxReply = addedReplyMaxId && replies.find(reply => reply.id === addedReplyMaxId)
 
   const additionalReplies = replies.filter(reply => reply.id !== 3 && reply.id !== 4);
 
@@ -74,26 +74,24 @@ export default function MaxUser() {
 
   return (
     <>
-      {isLoading ? (
-        <p>is loading...</p>
-      ) : 
+      
       <div>
           <div className='comments-container-max'>
             <div className='top-section'>
-              <img className='amy-img' src={maxObject.user.image.png} alt="amy robson" />
-              <p><span>{maxObject.user.username}</span></p>
-              <p>{maxObject.createdAt}</p>
+              <img className='amy-img' src={maxObject?.user.image.png} alt="amy robson" />
+              <p><span>{maxObject?.user.username}</span></p>
+              <p>{maxObject?.createdAt}</p>
             </div>
-            <p className='content'>{maxObject.content}</p>
+            <p className='content'>{maxObject?.content}</p>
             <div className='bottom-section'>
 
               <div className='vote-action'>
 
-                <img onClick={() => increment(maxObject.id)} src={plusIcon} alt="plus icon" />
+                <img onClick={() => increment(maxObject?.id)} src={plusIcon} alt="plus icon" />
 
-                <span>{voteCounts[maxObject.id] ? voteCounts[maxObject.id].count : 0}</span>
+                <span>{voteCounts[maxObject?.id] ? voteCounts[maxObject?.id].count : 0}</span>
 
-                <img onClick={() => decrement(maxObject.id)} src={minusIcon} alt="minus icon" />
+                <img onClick={() => decrement(maxObject?.id)} src={minusIcon} alt="minus icon" />
 
               </div>
 
@@ -110,11 +108,11 @@ export default function MaxUser() {
             <RamsesUser reply={ramsesReply} replies={replies} setReplies={setReplies}/>
             <JuliusUser reply={juliusReply} replies={replies} setReplies={setReplies}/>
             {additionalReplies.map(reply => (
-              <MaxReplies  
-                maxReply={maxReply}
+              <MaxReplies
+                maxReply={reply}
+                key={reply.id}
                 replies={replies}
                 setReplies={setReplies}
-                key={reply.id}
                 replyText={replyText}
                 setReplyText={setReplyText}
                 /> 
@@ -133,7 +131,7 @@ export default function MaxUser() {
 
           
           
-      </div>}
+      </div>
       
     </>
   )
