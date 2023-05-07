@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
+
 const Context = React.createContext()
 
 function ContextProvider({ children }) {
@@ -10,7 +11,7 @@ function ContextProvider({ children }) {
   const [voteCounts, setVoteCounts] = useState({})
 
   useEffect(() => {
-    fetch('/public/data.json')
+    fetch('./data.json')
       .then(res => res.json())
       .then(data => {
         SetCurrentUserData(data.currentUser)
