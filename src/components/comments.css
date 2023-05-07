@@ -1,22 +1,23 @@
 .comments-container {
-  margin: 1.5em;
-  min-width: 300px;
-  width: 700px;
+  width: 80%;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
   background-color: var(--White);
   border-radius: 1rem;
+  margin: 0 auto;
+  margin-top: 1em;
 }
 
-.comments-container-max {
-  margin: 1.5em;
-  min-width: 300px;
-  width: 700px;
+.replies-container {
+  width: 80%;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
   background-color: var(--White);
   border-radius: 1rem;
-  margin-top: 0;
+  margin: 0 auto;
+  margin-top: 1em;
 }
 
 .top-section,
@@ -27,11 +28,11 @@
 .top-section {
   display: flex;
   align-items: center;
-  margin-top: 1em;
-  margin-bottom: 1em;
+  margin-top: .5em;
+  margin-bottom: .5em;
 }
 
-.top-section .amy-img {
+.top-section .user-img {
   max-height: 2.4rem;
   max-width: 2.4rem;
 }
@@ -41,7 +42,7 @@
   background-color: var(--Moderate-blue);
   font-weight: 400;
   margin-left: 0;
-  margin-right: 10n px;
+  margin-right: 10px;
   padding: .25px 5px;
 }
 
@@ -66,11 +67,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1em;
 }
 
 .vote-action {
   background-color: var(--Light-gray);
-  padding: 1em 1em;
   border-radius: .5rem;
   display: flex;
   align-items: center;
@@ -78,18 +79,24 @@
 
 .vote-action img {
   cursor: pointer;
+  padding: 1em 1em;
 }
 
 .vote-action span {
   font-weight: 700;
-  margin: 0 1em;
+  margin: 0;
   color: var(--Moderate-blue);
+}
+
+.reply-action {
+  display: flex;
+  align-items: center;
 }
 
 .reply-action span{
   font-weight: 700;
   margin-left: .5em;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--Moderate-blue);
   cursor: pointer;
 }
@@ -97,6 +104,7 @@
 .reply-action .delete {
   color: var(--Soft-Red);
   margin-right: 1em;
+  flex-shrink: 1;
 }
 
 /*editable/replying section */
@@ -130,59 +138,7 @@
 }
 
 .edit-container button {
-  padding: 1em 1.5em;
-  margin-left: 5px;
-  background-color: var(--Moderate-blue);
-  color: var(--White);
-  border-radius: .5rem;
-  letter-spacing: .5px;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-}
-
-/* reply container css*/
-
-.reply-container {
-  display: flex;
-  flex-direction: column;
-  min-width: 300px;
-  margin: 1.5em;
-  background-color: var(--White);
-  border-radius: 1rem;
-  padding: 1em 1.5em;
-}
-
-.reply-top-section {
-  display: flex;
-}
-
-.reply-container img {
-  max-height: 2.8rem;
-  max-width: 2.8rem;
-  align-self: flex-start;
-   
-}
-
-.reply-container textarea {
-  resize: none;
-  padding: 1em 2em;
-  margin-left: 1em;
-  border: 1.5px solid var(--Moderate-blue);
-  border-radius: 1rem;
-  font-size: 1rem;
-  outline: none;
-  width: 100%;
-}
-
-.reply-buttons {
-  display: flex;
-  justify-content: end;
-  padding-top: 1em;
-}
-
-.reply-buttons button {
-  padding: 1em 1.5em;
+  padding: 1em 1em;
   margin-left: 5px;
   background-color: var(--Moderate-blue);
   color: var(--White);
@@ -269,27 +225,36 @@
 /* is replying section*/
 
 .is-replying {
+  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: end;
+  margin: 0 auto;
 }
 
 .border-left {
   position: relative;
 }
 
-.border-left::before {
+.is-replying .border-left::before {
   content: "";
   position: absolute;
-  left: -5%;
+  left: 15%;
   top: 2%;
-  bottom: 5%;
+  bottom: 0%;
   border-left: 2.5px solid hsl(211, 10%, 45%, .1);
 }
 
 .is-replying > div {
-  width: 500px;
+  min-width: 360px;
+}
 
+.is-replying .replies-container {
+  margin-right: 0;
+}
+
+.is-replying .current-user-container {
+  margin-right: 0;
 }
 
 

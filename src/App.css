@@ -4,20 +4,19 @@
   width: 100vw;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .current-user-container {
-  margin: 1.5em;
-  min-width: 300px;
-  
+  width: 80%;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
   background-color: var(--White);
   border-radius: 1rem;
-  align-self: flex-end;
-  order: 2;
+  margin: 0 auto;
+  margin-top: 1em;
 }
 
 .current-user-container textarea {
@@ -27,6 +26,7 @@
   border: 1.5px solid var(--Moderate-blue);
   border-radius: 1rem;
   font-size: 1rem;
+  margin-bottom: 0;
 }
 
 .current-user-container textarea:focus {
@@ -41,18 +41,19 @@
 }
 
 .current-bottom-section img {
-  max-height: 2.4rem;
-  max-width: 2.4rem;
+  max-height: 2.8rem;
+  max-width: 2.8rem;
 }
 
 .current-bottom-section button {
-  padding: 1em 1.5em;
+  padding: 1em 1em;
+  margin-left: 5px;
   background-color: var(--Moderate-blue);
   color: var(--White);
   border-radius: .5rem;
   letter-spacing: .5px;
+  
   text-transform: uppercase;
   border: none;
   cursor: pointer;
-  margin-left: 5px;
 }

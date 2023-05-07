@@ -66,58 +66,56 @@ export default function AmyUser() {
 
   return (
     <>
-        <div>
-          <div className='comments-container'>
-            <div className='top-section'>
-              <img className='amy-img' src={amyObject?.user.image.png} alt="amy robson" />
-              <p><span>{amyObject?.user.username}</span></p>
-              <p>{amyObject?.createdAt}</p>
-            </div>
-            <p className='content'>{amyObject?.content}</p>
-            <div className='bottom-section'>
-
-              <div className='vote-action'>
-
-                <img onClick={() => increment(amyObject?.id)} src={plusIcon} alt="plus icon" />
-
-                <span>{voteCounts[amyObject?.id] ? voteCounts[amyObject?.id].count : 0}</span>
-
-                <img onClick={() => decrement(amyObject.id)} src={minusIcon} alt="minus icon" />
-
-              </div>
-
-              <div className='reply-action'>
-                <img src={replyIcon} alt="reply icon" />
-                <span onClick={handleReplyClick}>Reply</span>
-              </div>
-
-            </div>
+      <div>
+        <div className='comments-container'>
+          <div className='top-section'>
+            <img className='user-img' src={amyObject?.user.image.png} alt="amy robson" />
+            <p><span>{amyObject?.user.username}</span></p>
+            <p>{amyObject?.createdAt}</p>
           </div>
-          
-          <CurrentUser 
-            ref={textAreaRef}
-            amyObject={amyObject}
-            isReplyingToAmy={isReplyingToAmy}
-            setIsReplyingToAmy={setIsReplyingToAmy}
-            handleReplyAmySave={handleReplyAmySave}
+          <p className='content'>{amyObject?.content}</p>
+          <div className='bottom-section'>
+
+            <div className='vote-action'>
+
+              <img onClick={() => increment(amyObject?.id)} src={plusIcon} alt="plus icon" />
+
+              <span>{voteCounts[amyObject?.id] ? voteCounts[amyObject?.id].count : 0}</span>
+
+              <img onClick={() => decrement(amyObject.id)} src={minusIcon} alt="minus icon" />
+
+            </div>
+
+            <div className='reply-action'>
+              <img src={replyIcon} alt="reply icon" />
+              <span onClick={handleReplyClick}>Reply</span>
+            </div>
+
+          </div>
+        </div>
+        
+        <CurrentUser 
+          ref={textAreaRef}
+          amyObject={amyObject}
+          isReplyingToAmy={isReplyingToAmy}
+          setIsReplyingToAmy={setIsReplyingToAmy}
+          handleReplyAmySave={handleReplyAmySave}
+          amyReplyText={amyReplyText}
+          setAmyReplyText={setAmyReplyText}
+          />
+
+        
+        {amyReplies?.map((reply) => (
+          <AmyReplies 
+            key={reply.id}
+            amyReply={reply}
+            amyReplies={amyReplies}
+            setAmyReplies={setAmyReplies}
             amyReplyText={amyReplyText}
             setAmyReplyText={setAmyReplyText}
-            />
-
-          
-          {amyReplies?.map((reply) => (
-            <AmyReplies 
-              key={reply.id}
-              amyReply={reply}
-              amyReplies={amyReplies}
-              setAmyReplies={setAmyReplies}
-              amyReplyText={amyReplyText}
-              setAmyReplyText={setAmyReplyText}
-            />
-            ))}
-        </div>
-
-     
+          />
+          ))}
+      </div>
     </>
   )
 }

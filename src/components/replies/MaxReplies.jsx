@@ -72,9 +72,9 @@ export default function MaxReplies({ maxReply, replies, setReplies, setReplyText
   return (
     <>
       {maxReply? (
-        <div className='comments-container-max'>
+        <div className='replies-container'>
           <div className='top-section'>
-            <img className='amy-img' src={maxReply.user.image.png} alt="amy robson" />
+            <img className='user-img' src={maxReply.user.image.png} />
             <p><span>{maxReply.user.username}</span></p>
             <span className='you'>you</span>
             <p>{getTimeAgo(new Date(maxReply.createdAt))}</p>

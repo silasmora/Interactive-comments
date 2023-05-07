@@ -19,7 +19,6 @@ function CurrentUser({
     
   const {currentUserData} = useContext(Context)
 
-  
   function handleReplyMaxChange(e) {
     const newValue = e.target.value
     setReplyText(newValue)
@@ -76,13 +75,12 @@ function CurrentUser({
           <img src={currentUserData.image.png} alt="juliusomo" />
           <div className='current-user-buttons'>
             <button onClick={handleCancelAmyClick}>Cancel</button>
-            <button onClick={handleReplyAmySave}>Send</button>
+            <button onClick={handleReplyAmySave}>Reply</button>
           </div>
         </div>
       </div>
       )}
 
-      
     </>
   )
 }

@@ -55,7 +55,6 @@ export default function JuliusUser({ reply, replies, setReplies }) {
   function handleDeleteClick(id) {
     const updatedReplies = replies.filter(reply => reply.id !== id)
     setReplies(updatedReplies)
-    localStorage.removeItem('edited content');
     toggleModal()
   }
 
@@ -72,9 +71,9 @@ export default function JuliusUser({ reply, replies, setReplies }) {
   }, [isEditing])
 
   return (
-    <div className='comments-container-max'>
+    <div className='replies-container'>
         <div className='top-section'>
-          <img className='amy-img' src={reply?.user.image.png} alt="amy robson" />
+          <img className='user-img' src={reply?.user.image.png} alt="julius user" />
           <p><span>{reply?.user.username}</span></p>
           <span className='you'>you</span>
           <p>{reply?.createdAt}</p>
@@ -123,7 +122,7 @@ export default function JuliusUser({ reply, replies, setReplies }) {
           <div className='overlay'>
             <div className='modal-content'>
               <h3>Delete Comment</h3>
-              <p>Are you sure you want to delete this comment? This will remove the comment and can't be undone.</p>
+              <p>This will not officially delete this comment since it will re-fetch the json data.</p>
               <div className='modal-buttons'>
                 <button className='modal-cancel-button' onClick={toggleModal}>No, Cancel</button>
                 <button className='modal-delete-button' onClick={() => handleDeleteClick(reply.id)}>Yes, Delete</button>

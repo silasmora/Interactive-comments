@@ -74,11 +74,10 @@ export default function MaxUser() {
 
   return (
     <>
-      
       <div>
-          <div className='comments-container-max'>
+          <div className='comments-container'>
             <div className='top-section'>
-              <img className='amy-img' src={maxObject?.user.image.png} alt="amy robson" />
+              <img className='user-img' src={maxObject?.user.image.png} alt="max blagun img" />
               <p><span>{maxObject?.user.username}</span></p>
               <p>{maxObject?.createdAt}</p>
             </div>
@@ -105,18 +104,18 @@ export default function MaxUser() {
 
           <div className={isReplying ? 'is-replying' : ''}>
             <div className='border-left'>
-            <RamsesUser reply={ramsesReply} replies={replies} setReplies={setReplies}/>
-            <JuliusUser reply={juliusReply} replies={replies} setReplies={setReplies}/>
-            {additionalReplies.map(reply => (
-              <MaxReplies
-                maxReply={reply}
-                key={reply.id}
-                replies={replies}
-                setReplies={setReplies}
-                replyText={replyText}
-                setReplyText={setReplyText}
-                /> 
-            ))}
+              <RamsesUser reply={ramsesReply} replies={replies} setReplies={setReplies}/>
+              <JuliusUser reply={juliusReply} replies={replies} setReplies={setReplies}/>
+              {additionalReplies.map(reply => (
+                <MaxReplies
+                  maxReply={reply}
+                  key={reply.id}
+                  replies={replies}
+                  setReplies={setReplies}
+                  replyText={replyText}
+                  setReplyText={setReplyText}
+                  /> 
+              ))}
             </div>
           </div>
 
@@ -129,10 +128,7 @@ export default function MaxUser() {
             setReplyText={setReplyText}
             />
 
-          
-          
       </div>
-      
     </>
   )
 }

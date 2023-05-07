@@ -74,9 +74,9 @@ export default function AmyReplies({ amyReply, amyReplies, setAmyReplies, setAmy
   return (
     <>
       {amyReply? (
-        <div className='comments-container-max'>
+        <div className='comments-container'>
           <div className='top-section'>
-            <img className='amy-img' src={amyReply.user.image.png} alt="amy robson" />
+            <img className='amy-img' src={amyReply.user.image.png} />
             <p><span>{amyReply.user.username}</span></p>
             <span className='you'>you</span>
             <p>{getTimeAgo(new Date(amyReply.createdAt))}</p>
