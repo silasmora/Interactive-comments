@@ -1,6 +1,7 @@
 .comments-container {
   width: 80%;
   max-width: 900px;
+  min-width: 325px;
   display: flex;
   flex-direction: column;
   background-color: var(--White);
@@ -246,7 +247,8 @@
 }
 
 .is-replying > div {
-  min-width: 360px;
+  min-width: 370px;
+  align-items: center;
 }
 
 .is-replying .replies-container {

@@ -9,10 +9,8 @@ function ContextProvider({ children }) {
   const [maxData, SetMaxData] = useState([])
   const [voteCounts, setVoteCounts] = useState({})
 
-  const url = 'data.json'
-
   useEffect(() => {
-    fetch(url)
+    fetch('/public/data.json')
       .then(res => res.json())
       .then(data => {
         SetCurrentUserData(data.currentUser)
@@ -40,8 +38,6 @@ function ContextProvider({ children }) {
       .catch(err => console.error(err))
   }, [])
   
-
-
   function increment(id) {
     setVoteCounts(prevCounts => {
       const count = prevCounts[id] ? prevCounts[id].count + 1 : 1;
